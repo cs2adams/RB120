@@ -1,6 +1,11 @@
 # rock_paper_scissors.rb
 require 'pry'
 require 'pry-byebug'
+
+def joinor(words)
+  "#{words[0..-2].join(', ')} or #{words[-1]}"
+end
+
 class Move
   def <(other_move)
     !(self > other_move) && !(other_move.instance_of?(self.class))
@@ -96,21 +101,58 @@ class Human < Player
 
     self.name = n
   end
-
-  def joinor(words)
-    "#{words[0..-2].join(', ')} or #{words[-1]}"
-  end
 end
 
 class Computer < Player
+  NAMES = ['R2D2', 'Hal', 'Chappie', 'Sonny', 'Number5']
+
   def set_name
-    self.name = ['R2D2', 'Hal', 'Chappie', 'Sonny', 'Number 5'].sample
+    self.name = self.class.to_s
   end
 
   def choose
-    move = RPSGame::MOVES[RPSGame::MOVES.keys.sample]
+    choice = self.class::WEIGHTS.max_by do |_, weight|
+      rand**(1.0 / weight)
+    end
+    choice = choice.first
+    move = RPSGame::MOVES[choice]
     self.move = move.new
   end
+end
+
+class R2D2 < Computer
+  WEIGHTS = {
+    'rock' => 0.92, 'paper' => 0.02, 'scissors' => 0.02,
+    'lizard' => 0.02, 'spock' => 0.02
+  }
+end
+
+class Hal < Computer
+  WEIGHTS = {
+    'rock' => 0.2, 'paper' => 0.0, 'scissors' => 0.7,
+    'lizard' => 0.0, 'spock' => 0.1
+  }
+end
+
+class Chappie < Computer
+  WEIGHTS = {
+    'rock' => 0.2, 'paper' => 0.2, 'scissors' => 0.2,
+    'lizard' => 0.2, 'spock' => 0.2
+  }
+end
+
+class Sonny < Computer
+  WEIGHTS = {
+    'rock' => 0.0, 'paper' => 0.0, 'scissors' => 0.0,
+    'lizard' => 0.0, 'spock' => 1.0
+  }
+end
+
+class Number5 < Computer
+  WEIGHTS = {
+    'rock' => 0.15, 'paper' => 0.15, 'scissors' => 0.15,
+    'lizard' => 0.4, 'spock' => 0.15
+  }
 end
 
 class Score
@@ -247,7 +289,7 @@ class RPSGame
 
   def initialize
     @human = Human.new
-    @computer = Computer.new
+    @computer = choose_computer.new
     @game_winner = nil
     @score = Score.new([@human, @computer])
     @game_history = GameHistory.new(human, computer)
@@ -270,6 +312,31 @@ class RPSGame
   private
 
   attr_accessor :human, :computer, :score, :game_winner, :game_history
+
+  def choose_computer
+    valid_choices = (Computer::NAMES + ['Randomize'])
+    puts "Please choose your opponent: #{joinor(valid_choices)}"
+    choice = get_user_input(valid_choices)
+
+    unless choice.downcase == 'randomize'
+      choice = Computer::NAMES.select do |n|
+        n.downcase == choice.downcase
+      end
+      return Kernel.const_get(choice.first)
+    end
+
+    Kernel.const_get(Computer::NAMES.sample)
+  end
+
+  def get_user_input(valid_choices)
+    answer = nil
+    loop do
+      answer = gets.chomp
+      break if valid_choices.map(&:downcase).include? answer.downcase
+      puts "Sorry, response not recognized."
+    end
+    answer
+  end
 
   def display_welcome_message
     puts "Welcome to Rock, Paper, Scissors!"
