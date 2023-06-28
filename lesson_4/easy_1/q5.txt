@@ -1,0 +1,3 @@
+The pizza class would create objects with an instance variable.
+Instance variables begin with @. The Fruit class creates a local
+variable upon initialization but does not create an instance variable.

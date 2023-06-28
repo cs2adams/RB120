@@ -1,0 +1,4 @@
+The default return value of to_s is a string representation of the
+object's class and object ID. To find out, try calling it. Alternatively,
+find the first to_s method definition in the object's inheritance
+heirarchy and check what the reutrn value is.

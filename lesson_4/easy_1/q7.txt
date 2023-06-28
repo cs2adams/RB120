@@ -1,0 +1,1 @@
+In this problem, self refers to the calling Cat object.

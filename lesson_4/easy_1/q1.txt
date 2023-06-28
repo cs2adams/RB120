@@ -1,0 +1,4 @@
+# QUESTION 1
+
+Answer: 1, 2, 3, and 4 are all objects in Ruby. By calling
+the #class method on each, one can determine what class they belon to.

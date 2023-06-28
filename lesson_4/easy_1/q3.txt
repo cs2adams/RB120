@@ -1,0 +1,6 @@
+A: Calling self.class will return the return of the class method called
+on the object referenced by self. The class of "self" will be the
+particular class that included the module, which is why the display message
+varies depending on the class of the calling object. Finally, the
+string interpolation calls to_s on the class to return a string representation
+of the class

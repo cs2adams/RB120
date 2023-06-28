@@ -1,0 +1,2 @@
+Here, self refers to the Cat class. Using self in this way
+defines a Class method.
