@@ -1,0 +1,5 @@
+tv.manufacturer => NoMethodError
+tv.model => some return value
+
+Television.manufacturer => some return value
+Television.model => NoMethodError

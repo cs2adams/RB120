@@ -1,0 +1,14 @@
+Case 1
+"Hello" will be printed to the terminal
+
+Case 2
+NoMethodError
+
+Case 3
+ArgumentError (wrong # of arguments)
+
+Case 4
+"Goodbye" is printed to the terminal
+
+Case 5
+NoMethodError
