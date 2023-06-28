@@ -1,0 +1,3 @@
+manufacturer is a class method. This is evidenced by the fact
+that the method name is prefixed with a call to self. the
+method would be called as Television.manufacturer

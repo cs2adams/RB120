@@ -1,0 +1,4 @@
+If we add a play method to the Bingo class, it will take priority
+in the lookup chain and will be executed when play is called
+on a Bingo instance. The Game#play method will not be called, unless
+the "super" keyword is used in the Bingo#play method

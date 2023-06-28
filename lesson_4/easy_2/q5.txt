@@ -1,0 +1,5 @@
+excited_dog is a local variable (pointing to a String object)
+@excited_dog is an instance variable (pointing to a String object)
+@@excited_dog is a class variable (pointing to a String object)
+
+The number of @ symbols preceding the variable name identify the type of variable

@@ -1,0 +1,8 @@
+The @@cats_count variable counts the # of Cat objects that have
+been initialized
+
+Tihs can be tested with:
+
+puts Cat.cats_count
+Cat.new('tabby')
+puts Cat.cats_count

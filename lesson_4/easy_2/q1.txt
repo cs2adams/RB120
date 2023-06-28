@@ -1,0 +1,4 @@
+The oracle will return a string starting with: "You will ".
+The last half of the string will be one of three possible predictions
+defined in the choices instance method. Nothing will be
+printed to the console.

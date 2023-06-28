@@ -1,0 +1,7 @@
+OOP has the following benefits:
+
+- Produce code that models real processes (with classes representing real world objects)
+    This makes code more understandable/readable and also easier to develop
+
+- Avoid redundancy and keep code organized using inheritance and modules
+

@@ -1,0 +1,1 @@
+The code will return "You will " + either "visit Vegas", "fly to Fiji" or "romp in Rome"

@@ -1,0 +1,9 @@
+Calling the ancestors method on any object will return the
+inheritance heirarchy, which is the lookup order for methods
+
+In this case, the lookup chain for Orange is:
+
+Orange > Taste > Object > Kernel > BasicObject
+
+And for HotSauce the lookup chain is:
+HotSauce > Taste > Object > Kernel > BasicObject
