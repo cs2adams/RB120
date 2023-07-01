@@ -7,7 +7,7 @@ class KrispyKreme
   def to_s
     output = (@filling_type.nil? ? 'Plain' : @filling_type)
     output << (@glazing.nil? ? '' : " with #{@glazing}")
-    puts output
+    output
   end
 end
 
