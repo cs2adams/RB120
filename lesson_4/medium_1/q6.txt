@@ -1,0 +1,5 @@
+Both implementations function the same way. In each case, the
+show_template function calls the template accessor function
+of the calling object to return the object's template instance
+variable. In the first case, the reference to self (the calling
+object) is implicit, while it is made explicit in the second case.

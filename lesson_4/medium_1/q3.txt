@@ -1,0 +1,5 @@
+Fixing it in this way will expose the setters to the public interface.
+This is particularly problematic in that it means the product
+name can be modified from outside the class. Perhaps we should
+consider using attr_accessor for quantity only, and keeping
+attr_reader for product_name

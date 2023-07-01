@@ -1,0 +1,2 @@
+Ben is correct, he is calling the balance getter method rather
+than referencing the instance variable directly
