@@ -254,7 +254,7 @@ class Human < Player
   attr_reader :player_number
 
   def prompt_player_marker
-    puts "Player #{player_number}, please enter a single character " \
+    puts "\nPlayer #{player_number}, please enter a single character " \
          "to use as your marker"
     prompt_valid_user_input(available_markers)
   end
@@ -267,7 +267,7 @@ class Human < Player
   def prompt_player_name
     name = ''
     loop do
-      name = gets.chomp
+      name = gets.chomp.strip
       break unless name.empty? || taken_names.include?(name)
       puts "Input not recognized. Please enter a valid name." if name.empty?
 
@@ -456,8 +456,9 @@ class Minimaxer
 end
 
 class Scoreboard
-  def initialize(players)
+  def initialize(players, num_games_to_win)
     @scoreboard = {}
+    @num_games_to_win = num_games_to_win
 
     players.each do |player|
       @scoreboard[player] = 0
@@ -470,7 +471,7 @@ class Scoreboard
   end
 
   def match_winner
-    scoreboard.select { |_, v| v >= 5 }.keys.first
+    scoreboard.select { |_, v| v >= num_games_to_win }.keys.first
   end
 
   def display
@@ -495,7 +496,7 @@ class Scoreboard
 
   private
 
-  attr_reader :scoreboard
+  attr_reader :scoreboard, :num_games_to_win
 
   def width
     width = 'Scoreboard'.size
@@ -520,26 +521,38 @@ class TTTGame
   MAX_ALGO_ITERS = 1_000_000
   MIN_BOARD_WIDTH = 3
   MAX_BOARD_WIDHTH = 7
+  MAX_MATCH_LENGTH = 20
 
   def initialize
-    width = prompt_board_width
-    @board = Board.new(width)
-    initialize_players
-    @current_player = Player.players.first
-    @scoreboard = Scoreboard.new(Player.players)
+    setup_game
   end
 
   def play
-    display_welcome_message
+    clear if human_turn?
     main_game
     display_goodbye_message
+  end
+
+  def num_games_to_win
+    (match_length / 2) + 1
   end
 
   private
 
   attr_reader :board, :human, :computer, :scoreboard, :max_players,
-              :min_computers, :max_computers, :num_humans
+              :min_computers, :max_computers, :num_humans, :match_length
   attr_accessor :current_player
+
+  def setup_game
+    display_welcome_message
+    @match_length = prompt_match_length
+    display_num_games_to_win
+    width = prompt_board_width
+    @board = Board.new(width)
+    initialize_players
+    @current_player = Player.players.first
+    @scoreboard = Scoreboard.new(Player.players, num_games_to_win)
+  end
 
   def initialize_players
     @max_players = max_allowable_players
@@ -570,8 +583,13 @@ class TTTGame
     (board.width / 2) + (board.width % 2)
   end
 
+  def prompt_match_length
+    puts "How many games would you like to play?"
+    puts "You can play a match of up to twenty games."
+    prompt_valid_user_input(('1'..MAX_MATCH_LENGTH.to_s).to_a).to_i
+  end
+
   def prompt_board_width
-    clear
     puts "Please enter the width of the board. The width can " \
          "be between #{MIN_BOARD_WIDTH} and #{MAX_BOARD_WIDHTH}."
 
@@ -580,7 +598,7 @@ class TTTGame
   end
 
   def prompt_num_human_players
-    puts 'Based on the selected board size, the game can ' \
+    puts "\nBased on the selected board size, the game can " \
          "accommodate up to #{max_players} players."
     puts 'The players can be any combination of humans and computers.'
     puts 'How many human players will be playing?'
@@ -596,16 +614,18 @@ class TTTGame
   end
 
   def display_no_computers_message
-    puts "You have selected a game with #{num_humans} human players."
+    puts "\nYou have selected a game with #{num_humans} human players."
     puts 'This is the maximum allowable number of players for a ' \
          "#{board.width} x #{board.width} board."
     puts 'There will be no AI opponents in this game.'
   end
 
   def display_no_humans_message
-    puts 'You have selected a game with no human players.'
+    clear
+    puts "You have selected a game with no human players."
     puts 'You will be a passive observer ' \
          'of your AI overlords.'
+    puts ''
   end
 
   def play_one_round
@@ -660,8 +680,14 @@ class TTTGame
   def display_welcome_message
     clear
     puts "Welcome to Tic Tac Toe!"
-    puts "This match will consist of up to nine games."
-    puts "The first player to win five games will win the match."
+  end
+
+  def display_num_games_to_win
+    print "\nThis match will consist of "
+    puts match_length == 1 ? "1 game." : "up to #{match_length} games."
+    print "The first player to win #{num_games_to_win} game"
+    print match_length == 1 ? '' : 's'
+    puts " will win the match."
     puts "You can choose to exit the match at any time."
     puts ""
   end
@@ -671,7 +697,8 @@ class TTTGame
     scoreboard.display
     match_winner = scoreboard.match_winner
     if match_winner
-      puts "#{match_winner} has one five rounds. This ends the match."
+      puts "#{match_winner} has won #{num_games_to_win} rounds. " \
+           "This ends the match."
     end
     puts "Thanks for playing Tic Tac Toe! Goodbye!"
   end
