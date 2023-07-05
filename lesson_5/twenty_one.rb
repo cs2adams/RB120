@@ -271,7 +271,7 @@ class Game
 
   # rubocop:disable Metrics/AbcSize
   def show_result
-    if @player.busted?
+    if player.busted?
       puts "#{dealer.words[:self]} #{dealer.words[:win]}!"
     elsif dealer.busted?
       puts "#{player.words[:self]} #{player.words[:win]}!"
